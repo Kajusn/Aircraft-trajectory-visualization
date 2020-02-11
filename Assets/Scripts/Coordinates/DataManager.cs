@@ -6,45 +6,47 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    private string FileName = @"C:\Users\kajus\Aircraft trajectory visualization\Assets\flights.csv";
-    private Hashtable CoordinatesList;
+    private string FilePath = @"C:\Users\kajus\Aircraft trajectory visualization\Assets\flights.csv";
+    public Hashtable CoordinatesList;
     private List<string> Flights;
     private int NmToM = 1852;
     private double FtToM = 0.3048;
     private double EngineUnitsRatio = 0.001;
 
     // Reads coordinates from CSV file
-    public Hashtable FlightsFromFile()
+    public Hashtable ReadFlightsFromFile()
     {
         var coordinatesList = new List<Coordinates>();
-
         var flightsTable = new Hashtable();
 
-        var reader = new StreamReader(File.OpenRead(FileName));
-
-        var line = reader.ReadLine();   // First line of data is unnecessary
-        while (!reader.EndOfStream)
+        using (var reader = new StreamReader(FilePath))
         {
-            line = reader.ReadLine();
-            var data = line.Split(',');
-            var coordinates = new Coordinates(
-            Convert.ToDouble(data[2]) * NmToM * 0.001,            // Reiktu prideti priklausomybe nuo radaro koordinaciu
-            Convert.ToDouble(data[3]) * NmToM * 0.001,            // Reiktu prideti priklausomybe nuo radaro koordinaciu
-            Convert.ToDouble(data[4]) * FtToM * EngineUnitsRatio, // Reiktu prideti priklausomybe nuo radaro koordinaciu
-            data[1],    // Flight ID
-            data[0]);   // Time coordinates were retrieved
-
-            if (!flightsTable.ContainsKey(data[1]))
+            var line = reader.ReadLine();   // First line of data is unnecessary
+            while (!reader.EndOfStream)
             {
-                var newList = new List<Coordinates>();
-                newList.Add(coordinates);
-                flightsTable.Add(data[1], newList);
-            }
-            else
-                ((List<Coordinates>)flightsTable[data[1]]).Add(coordinates);
-        }
+                line = reader.ReadLine();
+                var data = line.Split(',');
+                var coordinates = new Coordinates(
+                Convert.ToDouble(data[2]) * NmToM * 0.001,            // Reiktu prideti priklausomybe nuo radaro koordinaciu
+                Convert.ToDouble(data[3]) * NmToM * 0.001,            // Reiktu prideti priklausomybe nuo radaro koordinaciu
+                Convert.ToDouble(data[4]) * FtToM * EngineUnitsRatio, // Reiktu prideti priklausomybe nuo radaro koordinaciu
+                data[1],    // Flight ID
+                data[0]);   // Time coordinates were retrieved
 
-        return flightsTable;
+                if (!flightsTable.ContainsKey(data[1]))
+                {
+                    var newList = new List<Coordinates>();
+                    newList.Add(coordinates);
+                    flightsTable.Add(data[1], newList);
+                }
+                else
+                    ((List<Coordinates>)flightsTable[data[1]]).Add(coordinates);
+            }
+
+            Debug.Log("Finished reading data from file!");
+            this.CoordinatesList = flightsTable;
+            return flightsTable;
+        }
     }
 
     // Start is called before the first frame update
