@@ -14,6 +14,10 @@ public class OnClickHandler : MonoBehaviour
     void TaskOnClick()
     {
         DataManager dm = gameObject.GetComponent<DataManager>();
-        dm.GetComponent<DataManager>().ReadFlightsFromFile();
+        Hashtable table = dm.GetComponent<DataManager>().ReadFlightsFromFile();
+
+        GameObject dropdown = GameObject.Find("FlightsList_Dropdown");
+        var dpHandler = dropdown.GetComponent<DropdownListHandler>();
+        dpHandler.Populate(table);
     }
 }
