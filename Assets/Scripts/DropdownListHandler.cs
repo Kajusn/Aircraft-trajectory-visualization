@@ -13,6 +13,9 @@ public class DropdownListHandler : MonoBehaviour
     public void Dropdown_IndexChanged(int index)
     {
         selectedItem.text = options[index];
+        GameObject tr = GameObject.Find("TrajectoryRenderer");
+        var tm = tr.GetComponent<TrajectoryMapper>();
+        tm.RenderTrajectory(selectedItem.text);
     }
 
     public void Populate(Hashtable table)

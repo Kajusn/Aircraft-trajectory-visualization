@@ -27,9 +27,9 @@ public class DataManager : MonoBehaviour
                 line = reader.ReadLine();
                 var data = line.Split(',');
                 var coordinates = new Coordinates(
-                Convert.ToDouble(data[2]) * NmToM * 0.001,            // Reiktu prideti priklausomybe nuo radaro koordinaciu
-                Convert.ToDouble(data[3]) * NmToM * 0.001,            // Reiktu prideti priklausomybe nuo radaro koordinaciu
-                Convert.ToDouble(data[4]) * FtToM * EngineUnitsRatio, // Reiktu prideti priklausomybe nuo radaro koordinaciu
+                Convert.ToDouble(data[2]) * NmToM * EngineUnitsRatio + 26.378,            // Reiktu prideti priklausomybe nuo radaro koordinaciu
+                Convert.ToDouble(data[3]) * NmToM * EngineUnitsRatio + 0.192,            // Reiktu prideti priklausomybe nuo radaro koordinaciu
+                Convert.ToDouble(data[4]) * FtToM * EngineUnitsRatio + 23.53,          // Reiktu prideti priklausomybe nuo radaro koordinaciu
                 data[1],    // Flight ID
                 data[0]);   // Time coordinates were retrieved
 
