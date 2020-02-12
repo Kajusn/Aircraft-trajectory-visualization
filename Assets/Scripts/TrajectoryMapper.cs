@@ -23,8 +23,10 @@ public class TrajectoryMapper : MonoBehaviour
         lr.positionCount = coordinatesList.Count;
         for (int i = 0; i < lr.positionCount; i++)
         {
-            lr.SetPosition(i, new Vector3((float)coordinatesList[i].x, (float)coordinatesList[i].y, (float)coordinatesList[i].z));
+            lr.SetPosition(i, new Vector3((float)coordinatesList[i].x, (float)coordinatesList[i].z, (float)coordinatesList[i].y));
         }
+        Debug.Log("Landing coordinates are: X " + coordinatesList[lr.positionCount - 1].x + "  Y " + coordinatesList[lr.positionCount - 1].z + "  Z " + coordinatesList[lr.positionCount - 1].y);
+        Debug.Log("Take-off coordinates are: X " + coordinatesList[0].x + "  Y " + coordinatesList[0].z + "  Z " + coordinatesList[0].y);
     }
 
     // Start is called before the first frame update
