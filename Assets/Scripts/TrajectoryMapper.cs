@@ -36,5 +36,9 @@ public class TrajectoryMapper : MonoBehaviour
         this.coordinates = coordinates;
         // Render default flight
         RenderTrajectory("AZA1271");
+
+        var aircraft = GameObject.Find("Aircraft");
+        var ac = aircraft.GetComponent<AircraftController>();
+        ac.StartFlight("AZA1271");
     }
 }

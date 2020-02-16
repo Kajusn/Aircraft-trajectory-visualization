@@ -25,13 +25,6 @@ public class DropdownListHandler : MonoBehaviour
         options = table.Keys.Cast<string>().ToList();
         dropdown.ClearOptions();
         dropdown.GetComponent<Dropdown>().AddOptions(options);
-        /*var i = 0;
-        foreach (string option in L)
-        {
-            dropdown.options.Add(new Dropdown.OptionData(option));
-            dropdown.options[i].text = option;
-            i++;
-        }*/
     }
 
     void Start()
