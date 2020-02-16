@@ -19,6 +19,7 @@ public class TrajectoryMapper : MonoBehaviour
     // Populates the line with the coordinates of the flight
     public void RenderTrajectory(string flight)
     {
+        lr.transform.Rotate(0, 58, 0, Space.World);
         List<Coordinates> coordinatesList = (List<Coordinates>)dm.CoordinatesList[flight];
         lr.positionCount = coordinatesList.Count;
         for (int i = 0; i < lr.positionCount; i++)
@@ -29,9 +30,11 @@ public class TrajectoryMapper : MonoBehaviour
         Debug.Log("Take-off coordinates are: X " + coordinatesList[0].x + "  Y " + coordinatesList[0].z + "  Z " + coordinatesList[0].y);
     }
 
-    // Start is called before the first frame update
+    // 
     public void Initialize(Hashtable coordinates)
     {
         this.coordinates = coordinates;
+        // Render default flight
+        RenderTrajectory("AZA1271");
     }
 }

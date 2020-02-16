@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    private string FilePath = @"C:\Users\kajus\Aircraft trajectory visualization\Assets\flights.csv";
+    private string FilePath = @"C:\Users\kajus\Aircraft-trajectory-visualization\Assets\flights.csv";
     public Hashtable CoordinatesList;
     private List<string> Flights;
     private int NmToM = 1852;
@@ -27,9 +27,9 @@ public class DataManager : MonoBehaviour
                 line = reader.ReadLine();
                 var data = line.Split(',');
                 var coordinates = new Coordinates(
-                Convert.ToDouble(data[2]) * NmToM * EngineUnitsRatio + -143.7745,     //-145.568625 Reiktu prideti priklausomybe nuo radaro koordinaciu
-                Convert.ToDouble(data[3]) * NmToM * EngineUnitsRatio + 127.563625,        //140.354 Reiktu prideti priklausomybe nuo radaro koordinaciu
-                Convert.ToDouble(data[4]) * FtToM * EngineUnitsRatio + -0.35664,         //-1.9416 Reiktu prideti priklausomybe nuo radaro koordinaciu
+                Convert.ToDouble(data[2]) * NmToM * EngineUnitsRatio + -147.7389375,//-143.7745,     //-145.568625 Reiktu prideti priklausomybe nuo radaro koordinaciu
+                Convert.ToDouble(data[3]) * NmToM * EngineUnitsRatio + 122.4673125,//127.563625,        //140.354 Reiktu prideti priklausomybe nuo radaro koordinaciu
+                Convert.ToDouble(data[4]) * FtToM * EngineUnitsRatio + 0.16152,//-0.35664,         //-1.9416 Reiktu prideti priklausomybe nuo radaro koordinaciu
                 data[1],    // Flight ID
                 data[0]);   // Time coordinates were retrieved
 
