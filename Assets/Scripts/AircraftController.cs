@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class AircraftController : MonoBehaviour
 {
     private DataManager dm;
-    private Rigidbody aircraft;
     private List<Coordinates> coordinates;
     private int nextPosition = 0;
 
@@ -16,7 +14,6 @@ public class AircraftController : MonoBehaviour
     void Awake()
     {
         dm = GameObject.Find("ReadFile_Btn").GetComponent<DataManager>();
-        aircraft = GetComponent<Rigidbody>();
     }
 
     void Update()
