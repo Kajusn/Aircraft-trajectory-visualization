@@ -13,9 +13,14 @@ public class DropdownListHandler : MonoBehaviour
     public void Dropdown_IndexChanged(int index)
     {
         selectedItem.text = options[index];
-        GameObject tr = GameObject.Find("TrajectoryRenderer");
-        var tm = tr.GetComponent<TrajectoryMapper>();
+
+        // Calls method to render selected flight trajectory
+        var tm = GameObject.Find("TrajectoryRenderer").GetComponent<TrajectoryMapper>();
         tm.RenderTrajectory(selectedItem.text);
+
+        // Calls method to simulate selected flight
+        var aircraft = GameObject.Find("Aircraft").GetComponent<AircraftController>();
+        aircraft.StartFlight(selectedItem.text);
     }
 
     public void Populate(Hashtable table)

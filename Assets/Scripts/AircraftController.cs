@@ -5,16 +5,17 @@ using UnityEngine;
 public class AircraftController : MonoBehaviour
 {
     private DataManager dm;
-    private GameObject aircraft;
+    private Rigidbody aircraft;
     private List<Coordinates> coordinates;
     private int nextPosition = 0;
+    [SerializeField]
+    private float speed = 5;
     
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        var dmObj = GameObject.Find("ReadFile_Btn");
-        dm = dmObj.GetComponent<DataManager>();
-        this.aircraft = GameObject.Find("Aircraft");
+        dm = GameObject.Find("ReadFile_Btn").GetComponent<DataManager>();
+        aircraft = GetComponent<Rigidbody>();
     }
 
     void Update()
@@ -24,18 +25,29 @@ public class AircraftController : MonoBehaviour
             return;
         // Stop flight simulation if all coordinates have been visited
         if (nextPosition == coordinates.Count)
+        {
             //return;
             nextPosition = 0;
-        var currentPosition = nextPosition;
-        this.aircraft.transform.position = new Vector3( (float)coordinates[currentPosition].x,
-                                                        (float)coordinates[currentPosition].z,
-                                                        (float)coordinates[currentPosition].y);
-        nextPosition++;
+            transform.position = new Vector3((float)coordinates[nextPosition].x,
+                                             (float)coordinates[nextPosition].z,
+                                             (float)coordinates[nextPosition].y);
+        }
+
+        var newPosition = new Vector3((float)coordinates[nextPosition].x,
+                                      (float)coordinates[nextPosition].z,
+                                      (float)coordinates[nextPosition].y);
+        transform.position = Vector3.MoveTowards(transform.position, newPosition, Time.deltaTime * speed);
+
+        if (Vector3.Distance(transform.position, newPosition) < 0.3)
+            nextPosition++;
     }
 
     public void StartFlight(string flight)
     {
         this.coordinates = (List<Coordinates>)dm.CoordinatesList[flight];
         this.nextPosition = 0;
+        transform.position = new Vector3((float)coordinates[nextPosition].x,
+                                         (float)coordinates[nextPosition].z,
+                                         (float)coordinates[nextPosition].y);
     }
 }
