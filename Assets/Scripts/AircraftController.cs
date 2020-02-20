@@ -8,8 +8,9 @@ public class AircraftController : MonoBehaviour
     private Rigidbody aircraft;
     private List<Coordinates> coordinates;
     private int nextPosition = 0;
+
     [SerializeField]
-    private float speed = 5;
+    private float speed = 0.07f;    // Around 250 km/h
     
     // Start is called before the first frame update
     void Awake()
@@ -33,11 +34,18 @@ public class AircraftController : MonoBehaviour
                                              (float)coordinates[nextPosition].y);
         }
 
-        var newPosition = new Vector3((float)coordinates[nextPosition].x,
-                                      (float)coordinates[nextPosition].z,
-                                      (float)coordinates[nextPosition].y);
+        // Position movement
+        Vector3 newPosition = new Vector3((float)coordinates[nextPosition].x,
+                                          (float)coordinates[nextPosition].z,
+                                          (float)coordinates[nextPosition].y);
         transform.position = Vector3.MoveTowards(transform.position, newPosition, Time.deltaTime * speed);
 
+        // Rotation movement
+        var targetRotation = Quaternion.LookRotation(newPosition - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * speed);
+
+        // If aircraft is less than 300 meters from the next position
+        // move towards next position
         if (Vector3.Distance(transform.position, newPosition) < 0.3)
             nextPosition++;
     }
