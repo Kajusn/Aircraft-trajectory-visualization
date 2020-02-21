@@ -3,17 +3,21 @@ using UnityEngine;
 
 public class AircraftController : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject dataManager;
+
+    [SerializeField]
+    [Range(0.05f, 1.5f)]
+    private float speed = 0.07f;    // Around 250 km/h
+
     private DataManager dm;
     private List<Coordinates> coordinates;
     private int nextPosition = 0;
+    private float smoothSpeed;
 
-    [SerializeField]
-    private float speed = 0.07f;    // Around 250 km/h
-    
-    // Start is called before the first frame update
     void Awake()
     {
-        dm = GameObject.Find("ReadFile_Btn").GetComponent<DataManager>();
+        dm = dataManager.GetComponent<DataManager>();
     }
 
     void Update()
@@ -38,12 +42,13 @@ public class AircraftController : MonoBehaviour
         transform.position = Vector3.MoveTowards(transform.position, newPosition, Time.deltaTime * speed);
 
         // Rotation movement
-        var targetRotation = Quaternion.LookRotation(newPosition - transform.position);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * speed);
+        smoothSpeed = 7 * speed;
+        var targetRotation = Quaternion.LookRotation(-(newPosition - transform.position));
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * smoothSpeed);
 
-        // If aircraft is less than 300 meters from the next position
+        // If aircraft is less than 50 meters from the next position
         // move towards next position
-        if (Vector3.Distance(transform.position, newPosition) < 0.3)
+        if (Vector3.Distance(transform.position, newPosition) < 0.05)
             nextPosition++;
     }
 

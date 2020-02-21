@@ -21,7 +21,7 @@ public class CameraFollow : MonoBehaviour
         // Set the position of the camera on the x-z plane to
         // distance kilometers behind the target
         transform.position = target.position;
-        transform.position -= currentRotation * Vector3.forward * distance;
+        transform.position += currentRotation * Vector3.forward * distance;
 
         // Set the height of the camera
         transform.position = new Vector3(transform.position.x, targetHeight, transform.position.z);
