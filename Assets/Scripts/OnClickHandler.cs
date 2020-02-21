@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
@@ -7,8 +6,8 @@ public class OnClickHandler : MonoBehaviour
 {
     void Start()
     {
-        Button btn = gameObject.GetComponent<Button>();
-        btn.onClick.AddListener(TaskOnClick);
+        Button button = gameObject.GetComponent<Button>();
+        button.onClick.AddListener(TaskOnClick);
     }
 
     void TaskOnClick()
@@ -24,6 +23,6 @@ public class OnClickHandler : MonoBehaviour
         // Sends the coordinates table to the trajectory renderer
         GameObject tr = GameObject.Find("TrajectoryRenderer");
         var tm = tr.GetComponent<TrajectoryMapper>();
-        tm.Initialize(table);
+        tm.Initialize();
     }
 }

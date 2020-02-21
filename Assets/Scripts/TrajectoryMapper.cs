@@ -1,13 +1,15 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(LineRenderer))]
 public class TrajectoryMapper : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject aircraft;
+
     LineRenderer lr;
     DataManager dm;
-    private Hashtable coordinates;
+    private string defaultFlight = "AZA1271";
 
     void Awake()
     {
@@ -24,21 +26,20 @@ public class TrajectoryMapper : MonoBehaviour
         lr.positionCount = coordinatesList.Count;
         for (int i = 0; i < lr.positionCount; i++)
         {
-            lr.SetPosition(i, new Vector3((float)coordinatesList[i].x, (float)coordinatesList[i].z, (float)coordinatesList[i].y));
+            lr.SetPosition(i, new Vector3((float)coordinatesList[i].x,
+                                          (float)coordinatesList[i].z, 
+                                          (float)coordinatesList[i].y));
         }
-        Debug.Log("Landing coordinates are: X " + coordinatesList[lr.positionCount - 1].x + "  Y " + coordinatesList[lr.positionCount - 1].z + "  Z " + coordinatesList[lr.positionCount - 1].y);
-        Debug.Log("Take-off coordinates are: X " + coordinatesList[0].x + "  Y " + coordinatesList[0].z + "  Z " + coordinatesList[0].y);
     }
 
-    // 
-    public void Initialize(Hashtable coordinates)
+    // Initialize trajectory renderer
+    public void Initialize()
     {
-        this.coordinates = coordinates;
         // Render default flight
-        RenderTrajectory("AZA1271");
+        RenderTrajectory(defaultFlight);
 
-        var aircraft = GameObject.Find("Aircraft");
+        // Start default flight
         var ac = aircraft.GetComponent<AircraftController>();
-        ac.StartFlight("AZA1271");
+        ac.StartFlight(defaultFlight);
     }
 }

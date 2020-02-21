@@ -29,10 +29,7 @@ public class AircraftController : MonoBehaviour
         if (nextPosition == coordinates.Count)
         {
             //return;
-            nextPosition = 0;
-            transform.position = new Vector3((float)coordinates[nextPosition].x,
-                                             (float)coordinates[nextPosition].z,
-                                             (float)coordinates[nextPosition].y);
+            ResetPosition();
         }
 
         // Position movement
@@ -52,12 +49,24 @@ public class AircraftController : MonoBehaviour
             nextPosition++;
     }
 
+    // Used to start flight simulation
     public void StartFlight(string flight)
     {
         this.coordinates = (List<Coordinates>)dm.CoordinatesList[flight];
+        ResetPosition();
+    }
+
+    // Sets aircraft position to initial position in coordinates list
+    private void ResetPosition()
+    {
         this.nextPosition = 0;
-        transform.position = new Vector3((float)coordinates[nextPosition].x,
-                                         (float)coordinates[nextPosition].z,
-                                         (float)coordinates[nextPosition].y);
+        Vector3 newPosition = new Vector3((float)coordinates[nextPosition].x,
+                                          (float)coordinates[nextPosition].z,
+                                          (float)coordinates[nextPosition].y);
+        Vector3 lookAt = new Vector3((float)coordinates[nextPosition + 1].x,
+                                     (float)coordinates[nextPosition + 1].z,
+                                     (float)coordinates[nextPosition + 1].y);
+        transform.position = newPosition;
+        transform.rotation = Quaternion.LookRotation(-(lookAt - transform.position));
     }
 }

@@ -27,9 +27,9 @@ public class DataManager : MonoBehaviour
                 line = reader.ReadLine();
                 var data = line.Split(',');
                 var coordinates = new Coordinates(
-                Convert.ToDouble(data[2]) * NmToM * EngineUnitsRatio + -147.7389375,//-143.7745,     //-145.568625 Reiktu prideti priklausomybe nuo radaro koordinaciu
-                Convert.ToDouble(data[3]) * NmToM * EngineUnitsRatio + 122.4673125,//127.563625,        //140.354 Reiktu prideti priklausomybe nuo radaro koordinaciu
-                Convert.ToDouble(data[4]) * FtToM * EngineUnitsRatio + 0.16152,//-0.35664,         //-1.9416 Reiktu prideti priklausomybe nuo radaro koordinaciu
+                Convert.ToDouble(data[2]) * NmToM * EngineUnitsRatio + -147.7389375,
+                Convert.ToDouble(data[3]) * NmToM * EngineUnitsRatio + 122.4673125,
+                Convert.ToDouble(data[4]) * FtToM * EngineUnitsRatio + 0.16152,
                 data[1],    // Flight ID
                 data[0]);   // Time coordinates were retrieved
 
@@ -43,22 +43,9 @@ public class DataManager : MonoBehaviour
                     ((List<Coordinates>)flightsTable[data[1]]).Add(coordinates);
             }
 
-            Debug.Log("Finished reading data from file!");
             this.CoordinatesList = flightsTable;
             return flightsTable;
         }
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
     }
 }
 

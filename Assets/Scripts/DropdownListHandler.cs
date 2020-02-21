@@ -6,35 +6,41 @@ using System.Linq;
 
 public class DropdownListHandler : MonoBehaviour
 {
-    private List<string> options;
-    private Dropdown dropdown;
-    private Text selectedItem;
+    [SerializeField]
+    private GameObject trajectoryRenderer;
 
+    [SerializeField]
+    private GameObject aircraft;
+
+    [SerializeField]
+    private GameObject flightText;
+
+    private Dropdown dropdown;
+    private AircraftController ac;
+    private TrajectoryMapper tm;
+
+    void Start()
+    {
+        dropdown = GetComponent<Dropdown>();
+        ac = aircraft.GetComponent<AircraftController>();
+        tm = trajectoryRenderer.GetComponent<TrajectoryMapper>();
+    }
     public void Dropdown_IndexChanged(int index)
     {
-        selectedItem.text = options[index];
+        flightText.GetComponent<Text>().text = dropdown.options[index].text;
 
         // Calls method to render selected flight trajectory
-        var tm = GameObject.Find("TrajectoryRenderer").GetComponent<TrajectoryMapper>();
-        tm.RenderTrajectory(selectedItem.text);
+        tm.RenderTrajectory(dropdown.options[index].text);
 
         // Calls method to simulate selected flight
-        var aircraft = GameObject.Find("Aircraft").GetComponent<AircraftController>();
-        aircraft.StartFlight(selectedItem.text);
+        ac.StartFlight(dropdown.options[index].text);
     }
 
     public void Populate(Hashtable table)
     {
-        dropdown = gameObject.GetComponent<Dropdown>();
         // Get all available flights
-        options = table.Keys.Cast<string>().ToList();
+        var options = table.Keys.Cast<string>().ToList();
         dropdown.ClearOptions();
         dropdown.GetComponent<Dropdown>().AddOptions(options);
-    }
-
-    void Start()
-    {
-        var text = GameObject.Find("Flight_Text");
-        this.selectedItem = text.GetComponent<Text>();
     }
 }
