@@ -15,12 +15,18 @@ public class DropdownListHandler : MonoBehaviour
     [SerializeField]
     private GameObject flightText;
 
+    [SerializeField]
+    private GameObject dataManager;
+
+    private DataManager dm;
     private Dropdown dropdown;
     private AircraftController ac;
     private TrajectoryMapper tm;
 
     void Start()
     {
+        dm = dataManager.GetComponent<DataManager>();
+        Populate(dm.keys);
         dropdown = GetComponent<Dropdown>();
         ac = aircraft.GetComponent<AircraftController>();
         tm = trajectoryRenderer.GetComponent<TrajectoryMapper>();
@@ -36,10 +42,9 @@ public class DropdownListHandler : MonoBehaviour
         ac.StartFlight(dropdown.options[index].text);
     }
 
-    public void Populate(Hashtable table)
+    // Populate dropdown list
+    public void Populate(List<string> options)
     {
-        // Get all available flights
-        var options = table.Keys.Cast<string>().ToList();
         dropdown.ClearOptions();
         dropdown.GetComponent<Dropdown>().AddOptions(options);
     }

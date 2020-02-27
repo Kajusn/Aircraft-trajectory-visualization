@@ -52,7 +52,7 @@ public class AircraftController : MonoBehaviour
     // Used to start flight simulation
     public void StartFlight(string flight)
     {
-        this.coordinates = (List<Coordinates>)dm.CoordinatesList[flight];
+        this.coordinates = (List<Coordinates>)dm.coordinatesList[flight];
         ResetPosition();
     }
 

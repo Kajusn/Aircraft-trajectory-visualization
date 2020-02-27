@@ -22,7 +22,7 @@ public class TrajectoryMapper : MonoBehaviour
     public void RenderTrajectory(string flight)
     {
         lr.transform.Rotate(0, 58, 0, Space.World);
-        List<Coordinates> coordinatesList = (List<Coordinates>)dm.CoordinatesList[flight];
+        List<Coordinates> coordinatesList = (List<Coordinates>)dm.coordinatesList[flight];
         lr.positionCount = coordinatesList.Count;
         for (int i = 0; i < lr.positionCount; i++)
         {
