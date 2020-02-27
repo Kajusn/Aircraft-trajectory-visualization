@@ -8,7 +8,7 @@ public class AircraftController : MonoBehaviour
 
     [SerializeField]
     [Range(0.05f, 1.5f)]
-    private float speed = 0.07f;    // Around 250 km/h
+    public float speed = 0.07f;    // Around 250 km/h
 
     private DataManager dm;
     private List<Coordinates> coordinates;
