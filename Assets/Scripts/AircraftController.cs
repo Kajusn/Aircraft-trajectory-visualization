@@ -15,6 +15,8 @@ public class AircraftController : MonoBehaviour
     private int nextPosition = 0;
     private float smoothSpeed;
 
+    private string defaultFlight = "AZA1271";
+
     void Awake()
     {
         dm = dataManager.GetComponent<DataManager>();
@@ -68,5 +70,10 @@ public class AircraftController : MonoBehaviour
                                      (float)coordinates[nextPosition + 1].y);
         transform.position = newPosition;
         transform.rotation = Quaternion.LookRotation(-(lookAt - transform.position));
+    }
+
+    public void Initialize()
+    {
+        StartFlight(defaultFlight);
     }
 }

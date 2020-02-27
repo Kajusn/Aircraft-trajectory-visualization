@@ -18,7 +18,7 @@ public class DataManager : MonoBehaviour
     private double UnitRatio = 0.001;   // Real world 1 meter is represented by 0.001 Unity units
 
     // Checks if data file exists
-    void Start()
+    void Awake()
     {
         if (File.Exists(defaultPath))
         {

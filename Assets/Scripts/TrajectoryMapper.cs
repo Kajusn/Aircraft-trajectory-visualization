@@ -5,7 +5,7 @@ using UnityEngine;
 public class TrajectoryMapper : MonoBehaviour
 {
     [SerializeField]
-    private GameObject aircraft;
+    private GameObject dataManager;
 
     LineRenderer lr;
     DataManager dm;
@@ -14,8 +14,7 @@ public class TrajectoryMapper : MonoBehaviour
     void Awake()
     {
         lr = GetComponent<LineRenderer>();
-        var dmObj = GameObject.Find("ReadFile_Btn");
-        dm = dmObj.GetComponent<DataManager>();
+        dm = dataManager.GetComponent<DataManager>();
     }
 
     // Populates the line with the coordinates of the flight
@@ -37,9 +36,5 @@ public class TrajectoryMapper : MonoBehaviour
     {
         // Render default flight
         RenderTrajectory(defaultFlight);
-
-        // Start default flight
-        var ac = aircraft.GetComponent<AircraftController>();
-        ac.StartFlight(defaultFlight);
     }
 }
