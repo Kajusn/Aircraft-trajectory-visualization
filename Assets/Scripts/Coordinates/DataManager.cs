@@ -1,20 +1,39 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 using System;
 using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    private string FilePath = @"C:\Users\kajus\Aircraft-trajectory-visualization\Assets\flights.csv";
-    public Hashtable CoordinatesList;
-    private List<string> Flights;
-    private int NmToM = 1852;
-    private double FtToM = 0.3048;
-    private double EngineUnitsRatio = 0.001;
+    private string defaultPath = @"C:\Users\kajus\Aircraft-trajectory-visualization\Assets\flights.csv";
+    private string altPath = @"C:\Users\kajus\Aircraft trajectory visualization\Assets\flights.csv";
+
+    public Hashtable coordinatesList { get; private set; }
+    public List<string> keys { get; private set; }
+
+    private int NM_M = 1852;            // Nautical miles to meters conversion
+    private double FT_M = 0.3048;       // Feet to meters conversion
+    private double UnitRatio = 0.001;   // Real world 1 meter is represented by 0.001 Unity units
+
+    // Checks if data file exists
+    void Start()
+    {
+        if (File.Exists(defaultPath))
+        {
+            coordinatesList = ReadFlightsFromFile(defaultPath);
+        }
+        else if (File.Exists(altPath))
+        {
+            coordinatesList = ReadFlightsFromFile(altPath);
+        }
+        else
+            Debug.LogError("Could not initialize Data Manager component - File does not exist");
+    }
 
     // Reads coordinates from CSV file
-    public Hashtable ReadFlightsFromFile()
+    private Hashtable ReadFlightsFromFile(string FilePath)
     {
         var coordinatesList = new List<Coordinates>();
         var flightsTable = new Hashtable();
@@ -27,9 +46,9 @@ public class DataManager : MonoBehaviour
                 line = reader.ReadLine();
                 var data = line.Split(',');
                 var coordinates = new Coordinates(
-                Convert.ToDouble(data[2]) * NmToM * EngineUnitsRatio + -147.7389375,
-                Convert.ToDouble(data[3]) * NmToM * EngineUnitsRatio + 122.4673125,
-                Convert.ToDouble(data[4]) * FtToM * EngineUnitsRatio + 0.16152,
+                Convert.ToDouble(data[2]) * NM_M * UnitRatio + -147.7389375,
+                Convert.ToDouble(data[3]) * NM_M * UnitRatio + 122.4673125,
+                Convert.ToDouble(data[4]) * FT_M * UnitRatio + 0.16152,
                 data[1],    // Flight ID
                 data[0]);   // Time coordinates were retrieved
 
@@ -42,8 +61,7 @@ public class DataManager : MonoBehaviour
                 else
                     ((List<Coordinates>)flightsTable[data[1]]).Add(coordinates);
             }
-
-            this.CoordinatesList = flightsTable;
+            keys = flightsTable.Keys.Cast<string>().ToList();
             return flightsTable;
         }
     }
