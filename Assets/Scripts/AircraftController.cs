@@ -15,7 +15,7 @@ public class AircraftController : MonoBehaviour
     private int nextPosition = 0;
     private float smoothSpeed;
 
-    private string defaultFlight = "AZA1271";
+    private string defaultFlight = "ELG1337";
 
     void Awake()
     {

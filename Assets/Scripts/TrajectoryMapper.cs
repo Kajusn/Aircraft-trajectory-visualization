@@ -9,7 +9,7 @@ public class TrajectoryMapper : MonoBehaviour
 
     LineRenderer lr;
     DataManager dm;
-    private string defaultFlight = "AZA1271";
+    private string defaultFlight = "ELG1337";
 
     void Awake()
     {
