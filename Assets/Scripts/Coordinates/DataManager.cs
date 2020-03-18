@@ -45,9 +45,9 @@ public class DataManager : MonoBehaviour
             {
                 line = reader.ReadLine();
                 var data = line.Split(',');
-                var coordinates = new Coordinates(
-                Convert.ToDouble(data[2]) * NM_M * UnitRatio + -147.7389375,
-                Convert.ToDouble(data[3]) * NM_M * UnitRatio + 122.4673125,
+                var coordinates = new Coordinates(          // ADD or SUBTRACT values to first two to move entire trajectory
+                Convert.ToDouble(data[2]) * NM_M * UnitRatio + -146.8389375, //-147.7389375     
+                Convert.ToDouble(data[3]) * NM_M * UnitRatio + 123.0303125, //122.4673125
                 Convert.ToDouble(data[4]) * FT_M * UnitRatio + 0.16152,
                 data[1],    // Flight ID
                 data[0]);   // Time coordinates were retrieved
