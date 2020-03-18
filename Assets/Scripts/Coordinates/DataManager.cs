@@ -32,7 +32,7 @@ public class DataManager : MonoBehaviour
         var approachFiles = new List<string>();
         approachFiles.Add(approach1); approachFiles.Add(approach2); approachFiles.Add(approach3);
         var approachFilesAlt = new List<string>();
-        approachFiles.Add(approach1Alt); approachFiles.Add(approach2Alt); approachFiles.Add(approach3Alt);
+        approachFilesAlt.Add(approach1Alt); approachFilesAlt.Add(approach2Alt); approachFilesAlt.Add(approach3Alt);
         if (File.Exists(defaultPath))
         {
             coordinatesList = ReadFlightsFromFile(defaultPath);
@@ -97,10 +97,10 @@ public class DataManager : MonoBehaviour
                     line = reader.ReadLine();
                     var data = line.Split(',');
                     var coordinates = new Coordinates(
-                    Convert.ToDouble(data[2]) * NM_M * UnitRatio + -34.06161, 
-                    Convert.ToDouble(data[3]) * NM_M * UnitRatio + -28.2831,
-                    Convert.ToDouble(data[4]) * FT_M * UnitRatio + 0.16152,
-                    data[1]);
+                    Convert.ToDouble(data[1]) * NM_M * UnitRatio + -34.06161, 
+                    Convert.ToDouble(data[2]) * NM_M * UnitRatio + -28.2831,
+                    Convert.ToDouble(data[3]) * FT_M * UnitRatio + 0.16152,
+                    data[0]);
 
                     if (!approachTable.ContainsKey(data[1]))
                     {
@@ -113,7 +113,7 @@ public class DataManager : MonoBehaviour
                 }
             }
         }
-        keys = approachTable.Keys.Cast<string>().ToList();
+        approachKeys = approachTable.Keys.Cast<string>().ToList();
         return approachTable;
     }
 }
