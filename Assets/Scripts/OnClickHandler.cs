@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine.UI;
+﻿using UnityEngine.UI;
 using UnityEngine;
 
 public class OnClickHandler : MonoBehaviour
@@ -12,6 +11,9 @@ public class OnClickHandler : MonoBehaviour
 
     [SerializeField]
     private GameObject optionText;
+
+    [SerializeField]
+    private GameObject cameraController;
 
     private TrajectoryMapper tm;
     private AircraftController ac;
@@ -39,5 +41,7 @@ public class OnClickHandler : MonoBehaviour
             tm.RenderTrajectory(option.text);
             ac.StartFlight(option.text);
         }
+        // Switches to follow camera
+        cameraController.GetComponent<CameraController>().SwitchFollow();
     }
 }

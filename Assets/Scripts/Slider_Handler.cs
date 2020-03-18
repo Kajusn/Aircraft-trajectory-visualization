@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class Slider_Handler : MonoBehaviour
@@ -6,8 +7,12 @@ public class Slider_Handler : MonoBehaviour
     [SerializeField]
     private GameObject aircraft;
 
+    [SerializeField]
+    private Text speedText;
+
     private AircraftController ac;
     private Slider slider;
+
 
     void Start()
     {
@@ -17,6 +22,7 @@ public class Slider_Handler : MonoBehaviour
     }
     public void ValueChanged()
     {
-        ac.speed = 0.07f * slider.value * 10;
+        ac.speed = 0.07f * slider.value;
+        speedText.text = Math.Round(slider.value, 1) + "x";
     }
 }
