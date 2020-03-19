@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
+    [SerializeField]
+    Transform radar;
     private string defaultPath = @"C:\Users\kajus\Aircraft-trajectory-visualization\Assets\flights.csv";
     private string altPath = @"C:\Users\kajus\Aircraft trajectory visualization\Assets\flights.csv";
     private string approach1 = @"C:\Users\kajus\Aircraft-trajectory-visualization\Assets\d8_pom.csv";
@@ -97,19 +99,18 @@ public class DataManager : MonoBehaviour
                     line = reader.ReadLine();
                     var data = line.Split(',');
                     var coordinates = new Coordinates(
-                    Convert.ToDouble(data[1]) * NM_M * UnitRatio + -34.06161, 
-                    Convert.ToDouble(data[2]) * NM_M * UnitRatio + -28.2831,
-                    Convert.ToDouble(data[3]) * FT_M * UnitRatio + 0.16152,
+                    Convert.ToDouble(data[1]) * NM_M * UnitRatio + radar.position.x,    //34.06161
+                    Convert.ToDouble(data[2]) * NM_M * UnitRatio + radar.position.z,    //28.2831
+                    Convert.ToDouble(data[3]) * FT_M * UnitRatio + 0.16152,     
                     data[0]);
-
-                    if (!approachTable.ContainsKey(data[1]))
+                    if (!approachTable.ContainsKey(data[0]))
                     {
                         var newList = new List<Coordinates>();
                         newList.Add(coordinates);
-                        approachTable.Add(data[1], newList);
+                        approachTable.Add(data[0], newList);
                     }
                     else
-                        ((List<Coordinates>)approachTable[data[1]]).Add(coordinates);
+                        ((List<Coordinates>)approachTable[data[0]]).Add(coordinates);
                 }
             }
         }
