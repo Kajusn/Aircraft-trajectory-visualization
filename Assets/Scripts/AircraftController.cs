@@ -7,13 +7,21 @@ public class AircraftController : MonoBehaviour
     private GameObject dataManager;
 
     [SerializeField]
-    [Range(0.05f, 1.5f)]
+    private Aircraft aircraftModel;
+
+    [SerializeField]
+    private CameraFollow aircraftCamera;
+
+    [SerializeField]
+    private TrailRenderer aircraftTrail;
+
     public float speed = 0.07f;    // Around 250 km/h
 
     private DataManager dm;
     private List<Coordinates> coordinates;
     private int nextPosition = 0;
     private float smoothSpeed;
+    private Aircraft aircraft;
 
     private string defaultFlight = "ELG1337";
 
@@ -24,6 +32,8 @@ public class AircraftController : MonoBehaviour
 
     void Update()
     {
+        if (aircraft == null)
+            return;
         // No flight simulation if there are no coordinates
         if (coordinates == null)
             return;
@@ -38,16 +48,16 @@ public class AircraftController : MonoBehaviour
         Vector3 newPosition = new Vector3((float)coordinates[nextPosition].x,
                                           (float)coordinates[nextPosition].z,
                                           (float)coordinates[nextPosition].y);
-        transform.position = Vector3.MoveTowards(transform.position, newPosition, Time.deltaTime * speed);
+        aircraft.transform.position = Vector3.MoveTowards(aircraft.transform.position, newPosition, Time.deltaTime * speed);
 
         // Rotation movement
         smoothSpeed = 7 * speed;
-        var targetRotation = Quaternion.LookRotation(-(newPosition - transform.position));
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * smoothSpeed);
+        var targetRotation = Quaternion.LookRotation(-(newPosition - aircraft.transform.position) + new Vector3(0f, 90.0f, 0f));
+        aircraft.transform.rotation = Quaternion.Slerp(aircraft.transform.rotation, targetRotation, Time.deltaTime * smoothSpeed);
 
         // If aircraft is less than 50 meters from the next position
         // move towards next position
-        if (Vector3.Distance(transform.position, newPosition) < 0.05)
+        if (Vector3.Distance(aircraft.transform.position, newPosition) < 0.05)
             nextPosition++;
     }
 
@@ -68,12 +78,16 @@ public class AircraftController : MonoBehaviour
         Vector3 lookAt = new Vector3((float)coordinates[nextPosition + 1].x,
                                      (float)coordinates[nextPosition + 1].z,
                                      (float)coordinates[nextPosition + 1].y);
-        transform.position = newPosition;
-        transform.rotation = Quaternion.LookRotation(-(lookAt - transform.position));
+        aircraft.transform.position = newPosition;
+        aircraft.transform.rotation = Quaternion.LookRotation(-(lookAt - aircraft.transform.position) + new Vector3(0f, 90.0f, 0f));
     }
 
     public void Initialize()
     {
+        aircraft = Instantiate<Aircraft>(aircraftModel);
+        aircraft.CreateAircraft(0.03f, 0.015f, 0f);
+        aircraftCamera.SetTarget(aircraft.transform);
+        aircraftTrail.transform.SetParent(aircraftCamera.transform);
         StartFlight(defaultFlight);
     }
 }
