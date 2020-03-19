@@ -2,20 +2,39 @@
 
 public class Tube : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    public float height = 1f;
+    int nbSides = 6;
+    float radius = 0.15f;
+    float thickness = 0.01f;
+    Vector3 position;
+    Vector3 target = Vector3.zero;
+
+    public void Settings(float height, Vector3 position, Vector3 target)
     {
+        this.height = height;
+        this.position = position;
+        this.target = target;
+    }
+
+    void Update()
+    {
+        
+    }
+
+    public void CreateTube(bool cone)
+    {
+        // Outter shell is at radius1 + radius2 / 2, inner shell at radius1 - radius2 / 2
+        float bottomRadius1 = radius;
+        float bottomRadius2 = thickness;
+        float topRadius1 = radius;
+        float topRadius2 = thickness;
+        if (cone)
+        {
+            bottomRadius1 = radius * 3;
+        }
         Mesh mesh = GetComponent<MeshFilter>().mesh;
         mesh.Clear();
-
-        float height = 1f;
-        int nbSides = 24;
-
-        // Outter shell is at radius1 + radius2 / 2, inner shell at radius1 - radius2 / 2
-        float bottomRadius1 = .5f;
-        float bottomRadius2 = .15f;
-        float topRadius1 = .5f;
-        float topRadius2 = .15f;
 
         int nbVerticesCap = nbSides * 2 + 2;
         int nbVerticesSides = nbSides * 2 + 2;
@@ -255,5 +274,9 @@ public class Tube : MonoBehaviour
         mesh.triangles = triangles;
 
         mesh.RecalculateBounds();
+        mesh.RecalculateNormals();
+        transform.position = position;
+        transform.LookAt(target);
+        transform.Rotate(90.0f, 0f, 0f);
     }
 }
