@@ -1,37 +1,63 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(LineRenderer))]
 public class LandingProcedureRenderer : MonoBehaviour
 {
     [SerializeField]
+    private Tube prefab;
+
+    [SerializeField]
     private GameObject dataManager;
 
-    LineRenderer lr;
     DataManager dm;
 
     void Start()
     {
-        lr = GetComponent<LineRenderer>();
         dm = dataManager.GetComponent<DataManager>();
-        //RenderProcedure();
+        RenderProcedure();
     }
 
     // Renders landing procedure
     public void RenderProcedure()
     {
-        lr.transform.Rotate(0, 58, 0, Space.World);
         foreach (var key in dm.approachKeys)
         {
             List<Coordinates> list = (List<Coordinates>)dm.approach[key];
-            lr = new LineRenderer();
-            lr.positionCount = list.Count;
-            for (int i = 0; i < lr.positionCount; i++)
+            for (int i = 0; i < list.Count-1; i++)
             {
-                lr.SetPosition(i, new Vector3((float)list[i].x,
+                Vector3 current = new Vector3((float)list[i].x,
                                               (float)list[i].z,
-                                              (float)list[i].y));
+                                              (float)list[i].y);
+                Vector3 next = new Vector3((float)list[i+1].x,
+                                           (float)list[i+1].z,
+                                           (float)list[i+1].y);
+                Tube tube = Instantiate(prefab);
+                tube.Settings(Vector3.Distance(current, next), current, next);
+                if (key == "final")
+                {
+                    tube.CreateTube(true);
+                }
+                else
+                {
+                    tube.CreateTube(false);
+                }
             }
         }
     }
+
+    /*void OnDrawGizmos()
+    {
+        foreach (var key in dm.approachKeys)
+        {
+            List<Coordinates> list = (List<Coordinates>)dm.approach[key];
+            for (int i = 0; i < list.Count; i++)
+            {
+                Vector3 current = new Vector3((float)list[i].x,
+                                              (float)list[i].z,
+                                              (float)list[i].y);
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawSphere(current, 0.1f);
+            }
+        }
+    }*/
 }

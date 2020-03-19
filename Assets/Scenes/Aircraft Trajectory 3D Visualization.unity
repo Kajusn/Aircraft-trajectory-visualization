@@ -286,6 +286,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64cc9f1199f8d424db9650976bb778b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  radar: {fileID: 940471055}
 --- !u!4 &127978207
 Transform:
   m_ObjectHideFlags: 0
@@ -410,7 +411,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00004005432}
+  m_AnchoredPosition: {x: 0, y: -0.000036239624}
   m_SizeDelta: {x: 0, y: 28}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &170076733
@@ -561,7 +562,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 614426723}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.8133332
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2169,6 +2170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d92200c9283c92e4cab17d02d4b45d88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefab: {fileID: 1308887515}
   dataManager: {fileID: 127978205}
 --- !u!120 &966729306
 LineRenderer:
@@ -3074,6 +3076,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3d7c37d3e0c7e24fa90ac9071951f64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  height: 0.5
 --- !u!4 &1308887516
 Transform:
   m_ObjectHideFlags: 0
