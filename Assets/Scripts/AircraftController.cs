@@ -41,8 +41,9 @@ public class AircraftController : MonoBehaviour
         // Stop flight simulation if all coordinates have been visited
         if (nextPosition == coordinates.Count)
         {
-            //return;
             ResetPosition();
+            this.coordinates = null;
+            return;
         }
 
         // Move aircraft to new position
@@ -84,7 +85,6 @@ public class AircraftController : MonoBehaviour
                                      (float)coordinates[nextPosition + 1].y);
         aircraft.transform.position = newPosition;
         aircraft.transform.rotation = Quaternion.LookRotation(-(lookAt - aircraft.transform.position) + new Vector3(0f, 90.0f, 0f));
-        trail.transform.position = aircraft.transform.position;
         trail.SetPosition(0, aircraft.transform.position);
     }
 
