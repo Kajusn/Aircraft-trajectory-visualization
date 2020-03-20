@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class LandingProcedureRenderer : MonoBehaviour
+public class TrajectoryManager : MonoBehaviour
 {
     [SerializeField]
     private Tube prefab;
@@ -23,14 +24,14 @@ public class LandingProcedureRenderer : MonoBehaviour
         foreach (var key in dm.approachKeys)
         {
             List<Coordinates> list = (List<Coordinates>)dm.approach[key];
-            for (int i = 0; i < list.Count-1; i++)
+            for (int i = 0; i < list.Count - 1; i++)
             {
                 Vector3 current = new Vector3((float)list[i].x,
                                               (float)list[i].z,
                                               (float)list[i].y);
-                Vector3 next = new Vector3((float)list[i+1].x,
-                                           (float)list[i+1].z,
-                                           (float)list[i+1].y);
+                Vector3 next = new Vector3((float)list[i + 1].x,
+                                           (float)list[i + 1].z,
+                                           (float)list[i + 1].y);
                 Tube tube = Instantiate(prefab);
                 tube.Settings(Vector3.Distance(current, next), current, next);
                 if (key == "final")
@@ -44,20 +45,4 @@ public class LandingProcedureRenderer : MonoBehaviour
             }
         }
     }
-
-    /*void OnDrawGizmos()
-    {
-        foreach (var key in dm.approachKeys)
-        {
-            List<Coordinates> list = (List<Coordinates>)dm.approach[key];
-            for (int i = 0; i < list.Count; i++)
-            {
-                Vector3 current = new Vector3((float)list[i].x,
-                                              (float)list[i].z,
-                                              (float)list[i].y);
-                Gizmos.color = Color.yellow;
-                Gizmos.DrawSphere(current, 0.1f);
-            }
-        }
-    }*/
 }
