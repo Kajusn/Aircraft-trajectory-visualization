@@ -25,6 +25,7 @@ public class AircraftManager : MonoBehaviour
 
     void Awake()
     {
+        aircraft = Instantiate<Aircraft>(aircraftModel);
         trail = GetComponent<LineRenderer>();
     }
 
@@ -63,6 +64,10 @@ public class AircraftManager : MonoBehaviour
             nextPosition++;
     }
 
+    public void MultiplySpeed(float times)
+    {
+        this.speed = 0.07f * times;
+    }
     // Used to start flight simulation
     public void StartFlight(string flight)
     {
@@ -88,7 +93,6 @@ public class AircraftManager : MonoBehaviour
 
     public void Initialize()
     {
-        aircraft = Instantiate<Aircraft>(aircraftModel);
         aircraft.CreateAircraft(0.03f, 0.015f, 0f);
         aircraftCamera.SetTarget(aircraft.transform);
         StartFlight(defaultFlight);

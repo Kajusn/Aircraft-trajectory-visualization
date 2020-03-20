@@ -1,18 +1,18 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SimulationManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private DataManager dataManager;
+
+    public void StartSimulation()
     {
-        
+        GetComponent<AircraftManager>().Initialize();
+        GetComponent<CameraManager>().SwitchAircraftCamera();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void ChangeFlight(string flight)
     {
-        
+        GetComponent<AircraftManager>().StartFlight(flight);
     }
 }

@@ -5,24 +5,22 @@ using UnityEngine.UI;
 public class Slider_Handler : MonoBehaviour
 {
     [SerializeField]
-    private GameObject aircraft;
+    private SimulationManager simulationManager;
 
     [SerializeField]
     private Text speedText;
 
-    private AircraftController ac;
     private Slider slider;
 
 
     void Start()
     {
-        ac = aircraft.GetComponent<AircraftController>();
         slider = GetComponent<Slider>();
         slider.onValueChanged.AddListener(delegate { ValueChanged(); });
     }
     public void ValueChanged()
     {
-        ac.speed = 0.07f * slider.value;
+        simulationManager.GetComponent<AircraftManager>().MultiplySpeed(slider.value);
         speedText.text = Math.Round(slider.value, 1) + "x";
     }
 }
