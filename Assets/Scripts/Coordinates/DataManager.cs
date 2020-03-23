@@ -9,6 +9,12 @@ public class DataManager : MonoBehaviour
 {
     [SerializeField]
     Transform radar;
+
+    [SerializeField]
+    String flightsFileName;
+
+    [SerializeField]
+    String ILSFileName;
     private string defaultPath = @"C:\Users\kajus\Aircraft-trajectory-visualization\Assets\flights.csv";
     private string altPath = @"C:\Users\kajus\Aircraft trajectory visualization\Assets\flights.csv";
     private string approach1 = @"C:\Users\kajus\Aircraft-trajectory-visualization\Assets\d8_pom.csv";
@@ -18,11 +24,11 @@ public class DataManager : MonoBehaviour
     private string approach3 = @"C:\Users\kajus\Aircraft-trajectory-visualization\Assets\final_approach.csv";
     private string approach3Alt = @"C:\Users\kajus\Aircraft trajectory visualization\Assets\final_approach.csv";
 
+    private string flightsFilePath;
+    private string ilsFilePath;
     public Hashtable coordinatesList { get; private set; }
     public List<string> keys { get; private set; }
-
-    public Hashtable approach { get; private set; }
-    public List<string> approachKeys { get; private set; }
+    public List<Coordinates> ils { get; private set; }
 
     private int NM_M = 1852;            // Nautical miles to meters conversion
     private double FT_M = 0.3048;       // Feet to meters conversion
@@ -31,26 +37,20 @@ public class DataManager : MonoBehaviour
     // Checks if data file exists
     void Awake()
     {
-        var approachFiles = new List<string>();
-        approachFiles.Add(approach1); approachFiles.Add(approach2); approachFiles.Add(approach3);
-        var approachFilesAlt = new List<string>();
-        approachFilesAlt.Add(approach1Alt); approachFilesAlt.Add(approach2Alt); approachFilesAlt.Add(approach3Alt);
-        if (File.Exists(defaultPath))
+        flightsFilePath = Application.dataPath + "/" + flightsFileName;
+        ilsFilePath = Application.dataPath + "/" + ILSFileName;
+
+        if (!File.Exists(flightsFilePath) || !File.Exists(ilsFilePath))
         {
-            coordinatesList = ReadFlightsFromFile(defaultPath);
-            approach = ApproachFromFile(approachFiles);
+            Debug.LogError("Could not initialize Data Manager component - Missing data files");
+            return;
         }
-        else if (File.Exists(altPath))
-        {
-            coordinatesList = ReadFlightsFromFile(altPath);
-            approach = ApproachFromFile(approachFilesAlt);
-        }
-        else
-            Debug.LogError("Could not initialize Data Manager component - File does not exist");
+        coordinatesList = ReadFlights(flightsFilePath);
+        ils = ReadIls(ilsFilePath);
     }
 
-    // Reads coordinates from CSV file
-    private Hashtable ReadFlightsFromFile(string FilePath)
+    // Reads flights coordinates from CSV file
+    private Hashtable ReadFlights(string FilePath)
     {
         var coordinatesList = new List<Coordinates>();
         var flightsTable = new Hashtable();
@@ -83,39 +83,26 @@ public class DataManager : MonoBehaviour
         }
     }
 
-    // Reads approach coordinates from CSV files
-    private Hashtable ApproachFromFile(List<string> FilePaths)
+    // Reads landing procedure coordinates from CSV file
+    private List<Coordinates> ReadIls(String FilePath)
     {
         var coordinatesList = new List<Coordinates>();
         var approachTable = new Hashtable();
-
-        foreach(var file in FilePaths)
+        using (var reader = new StreamReader(FilePath))
         {
-            using (var reader = new StreamReader(file))
+            var line = reader.ReadLine();   // First line of data is unnecessary
+            while (!reader.EndOfStream)
             {
-                var line = reader.ReadLine();   // First line of data is unnecessary
-                while (!reader.EndOfStream)
-                {
-                    line = reader.ReadLine();
-                    var data = line.Split(',');
-                    var coordinates = new Coordinates(
-                    Convert.ToDouble(data[1]) * NM_M * UnitRatio + radar.position.x,    //34.06161
-                    Convert.ToDouble(data[2]) * NM_M * UnitRatio + radar.position.z,    //28.2831
-                    Convert.ToDouble(data[3]) * FT_M * UnitRatio + 0.16152,     
-                    data[0]);
-                    if (!approachTable.ContainsKey(data[0]))
-                    {
-                        var newList = new List<Coordinates>();
-                        newList.Add(coordinates);
-                        approachTable.Add(data[0], newList);
-                    }
-                    else
-                        ((List<Coordinates>)approachTable[data[0]]).Add(coordinates);
-                }
+                line = reader.ReadLine();
+                var data = line.Split(',');
+                var coordinates = new Coordinates(
+                Convert.ToDouble(data[0]) * NM_M * UnitRatio + radar.position.x,    //34.06161
+                Convert.ToDouble(data[1]) * NM_M * UnitRatio + radar.position.z,    //28.2831
+                Convert.ToDouble(data[2]) * FT_M * UnitRatio + 0.16152);
+                coordinatesList.Add(coordinates);
             }
         }
-        approachKeys = approachTable.Keys.Cast<string>().ToList();
-        return approachTable;
+        return coordinatesList;
     }
 }
 
@@ -135,7 +122,7 @@ public class Coordinates
         this.flight = flight;
         this.time = time;
     }
-    public Coordinates(double x, double y, double z, string flight)
+    public Coordinates(double x, double y, double z)
     {
         this.x = x;
         this.y = y;

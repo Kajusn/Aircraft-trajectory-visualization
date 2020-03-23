@@ -17,11 +17,6 @@ public class Tube : MonoBehaviour
         this.target = target;
     }
 
-    void Update()
-    {
-        
-    }
-
     public void CreateTube(bool cone)
     {
         // Outter shell is at radius1 + radius2 / 2, inner shell at radius1 - radius2 / 2
