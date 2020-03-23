@@ -5,24 +5,23 @@ using UnityEngine;
 public class TrajectoryMapper : MonoBehaviour
 {
     [SerializeField]
-    private GameObject aircraft;
+    private GameObject dataManager;
 
     LineRenderer lr;
     DataManager dm;
-    private string defaultFlight = "AZA1271";
+    private string defaultFlight = "ELG1337";
 
     void Awake()
     {
         lr = GetComponent<LineRenderer>();
-        var dmObj = GameObject.Find("ReadFile_Btn");
-        dm = dmObj.GetComponent<DataManager>();
+        dm = dataManager.GetComponent<DataManager>();
     }
 
     // Populates the line with the coordinates of the flight
     public void RenderTrajectory(string flight)
     {
         lr.transform.Rotate(0, 58, 0, Space.World);
-        List<Coordinates> coordinatesList = (List<Coordinates>)dm.CoordinatesList[flight];
+        List<Coordinates> coordinatesList = (List<Coordinates>)dm.coordinatesList[flight];
         lr.positionCount = coordinatesList.Count;
         for (int i = 0; i < lr.positionCount; i++)
         {
@@ -37,9 +36,5 @@ public class TrajectoryMapper : MonoBehaviour
     {
         // Render default flight
         RenderTrajectory(defaultFlight);
-
-        // Start default flight
-        var ac = aircraft.GetComponent<AircraftController>();
-        ac.StartFlight(defaultFlight);
     }
 }
