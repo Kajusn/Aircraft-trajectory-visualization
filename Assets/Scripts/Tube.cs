@@ -2,7 +2,7 @@
 
 public class Tube : MonoBehaviour
 {
-    public float height = 1f;
+    float height = 1f;
     int nbSides = 6;
     float radius = 0.15f;
     float thickness = 0.01f;

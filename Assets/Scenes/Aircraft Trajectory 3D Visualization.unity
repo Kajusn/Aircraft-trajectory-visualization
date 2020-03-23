@@ -413,7 +413,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00004196167}
+  m_AnchoredPosition: {x: 0, y: 0.00006484985}
   m_SizeDelta: {x: 0, y: 28}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &170076733
@@ -564,7 +564,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 614426723}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999976
+  m_Size: 0.813334
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1934,7 +1934,7 @@ GameObject:
   - component: {fileID: 940471053}
   - component: {fileID: 940471052}
   m_Layer: 0
-  m_Name: Pomigliano radar
+  m_Name: VOR/DME
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2790,7 +2790,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3d7c37d3e0c7e24fa90ac9071951f64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  height: 0.5
 --- !u!4 &1308887516
 Transform:
   m_ObjectHideFlags: 0

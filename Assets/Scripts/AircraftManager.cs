@@ -26,6 +26,7 @@ public class AircraftManager : MonoBehaviour
     void Awake()
     {
         aircraft = Instantiate<Aircraft>(aircraftModel);
+        aircraft.transform.SetParent(transform);
         trail = GetComponent<LineRenderer>();
     }
 
