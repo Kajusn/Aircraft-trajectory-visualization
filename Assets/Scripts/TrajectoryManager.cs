@@ -28,6 +28,7 @@ public class TrajectoryManager : MonoBehaviour
                                         (float)list[i + 1].y);
             Tube tube = Instantiate(prefab);
             tube.Settings(Vector3.Distance(current, next), current, next);
+            tube.CreateTube(false);
             tube.transform.SetParent(transform);
         }
     }

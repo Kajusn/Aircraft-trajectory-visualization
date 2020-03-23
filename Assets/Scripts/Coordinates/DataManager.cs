@@ -15,14 +15,6 @@ public class DataManager : MonoBehaviour
 
     [SerializeField]
     String ILSFileName;
-    private string defaultPath = @"C:\Users\kajus\Aircraft-trajectory-visualization\Assets\flights.csv";
-    private string altPath = @"C:\Users\kajus\Aircraft trajectory visualization\Assets\flights.csv";
-    private string approach1 = @"C:\Users\kajus\Aircraft-trajectory-visualization\Assets\d8_pom.csv";
-    private string approach1Alt = @"C:\Users\kajus\Aircraft trajectory visualization\Assets\d8_pom.csv";
-    private string approach2 = @"C:\Users\kajus\Aircraft-trajectory-visualization\Assets\d8_pom_final_approach.csv";
-    private string approach2Alt = @"C:\Users\kajus\Aircraft trajectory visualization\Assets\d8_pom_final_approach.csv";
-    private string approach3 = @"C:\Users\kajus\Aircraft-trajectory-visualization\Assets\final_approach.csv";
-    private string approach3Alt = @"C:\Users\kajus\Aircraft trajectory visualization\Assets\final_approach.csv";
 
     private string flightsFilePath;
     private string ilsFilePath;
@@ -87,7 +79,6 @@ public class DataManager : MonoBehaviour
     private List<Coordinates> ReadIls(String FilePath)
     {
         var coordinatesList = new List<Coordinates>();
-        var approachTable = new Hashtable();
         using (var reader = new StreamReader(FilePath))
         {
             var line = reader.ReadLine();   // First line of data is unnecessary
