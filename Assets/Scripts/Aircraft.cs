@@ -2,6 +2,12 @@
 
 public class Aircraft : MonoBehaviour
 {
+    CapsuleCollider aircraftCollider;
+    void Awake()
+    {
+        aircraftCollider = GetComponent<CapsuleCollider>();
+    }
+
     // Creates cone shaped aircraft model
     public void CreateAircraft(float height, float bottomRadius, float topRadius)
     {
@@ -12,6 +18,10 @@ public class Aircraft : MonoBehaviour
         float height = 1f;
         float bottomRadius = .25f;
         float topRadius = .05f;*/
+        aircraftCollider.height = height;
+        aircraftCollider.radius = bottomRadius;
+        aircraftCollider.center = new Vector3(0f, height / 2, 0f);
+        aircraftCollider.transform.rotation = transform.rotation;
         int nbSides = 18;
         int nbHeightSeg = 1; // Not implemented yet
 
