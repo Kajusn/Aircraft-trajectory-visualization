@@ -8,7 +8,14 @@ public class Tube : MonoBehaviour
     float thickness = 0.01f;
     Vector3 position;
     Vector3 target = Vector3.zero;
+    CapsuleCollider tubeCollider;
 
+    void Awake()
+    {
+        tubeCollider = GetComponent<CapsuleCollider>();
+    }
+
+    // Set Tube height, position and LookAt target before creating tube
     public void Settings(float height, Vector3 position, Vector3 target)
     {
         this.height = height;
@@ -16,6 +23,7 @@ public class Tube : MonoBehaviour
         this.target = target;
     }
 
+    // Creates tube object
     public void CreateTube(bool cone)
     {
         // Outter shell is at radius1 + radius2 / 2, inner shell at radius1 - radius2 / 2
@@ -23,6 +31,10 @@ public class Tube : MonoBehaviour
         float bottomRadius2 = thickness;
         float topRadius1 = radius;
         float topRadius2 = thickness;
+        tubeCollider.height = height;
+        tubeCollider.radius = radius;
+        tubeCollider.center = new Vector3 (0f, height / 2, 0f);
+        tubeCollider.transform.LookAt(target);
         if (cone)
         {
             bottomRadius1 = radius * 3;

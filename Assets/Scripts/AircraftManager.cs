@@ -18,7 +18,7 @@ public class AircraftManager : MonoBehaviour
     private List<Coordinates> coordinates;
     private int nextPosition = 0;
     private float smoothSpeed;
-    private Aircraft aircraft;
+    public Aircraft aircraft { get; private set; }
     private LineRenderer trail;
 
     private string defaultFlight = "ELG1337";

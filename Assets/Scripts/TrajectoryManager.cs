@@ -11,9 +11,15 @@ public class TrajectoryManager : MonoBehaviour
 
     private GameObject landingProcedure;
 
+    private Transform[] tubes;
+
+    private Aircraft aircraft;
+
     void Start()
     {
         RenderProcedure();
+        aircraft = GetComponent<AircraftManager>().aircraft;
+        //aircraft.GetComponent<Renderer>().material.SetColor("_Color", Color.cyan);
     }
 
     // Renders landing procedure
@@ -35,6 +41,16 @@ public class TrajectoryManager : MonoBehaviour
             tube.Settings(Vector3.Distance(current, next), current, next);
             tube.CreateTube(false);
             tube.transform.SetParent(landingProcedure.transform);
+        }
+        tubes = landingProcedure.GetComponentsInChildren<Transform>();
+    }
+
+    // Checks if aircraft is following landing procedure guidelines
+    void CheckTrajectory()
+    {
+        foreach (Transform tubePart in tubes)
+        {
+            tubePart.gameObject.SetActive(false);
         }
     }
 }
