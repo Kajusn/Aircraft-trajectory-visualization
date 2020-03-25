@@ -28,6 +28,7 @@ public class AircraftManager : MonoBehaviour
         aircraft = Instantiate<Aircraft>(aircraftModel);
         aircraft.transform.SetParent(transform);
         trail = GetComponent<LineRenderer>();
+        trail.transform.SetParent(aircraft.transform);
     }
 
     void Update()
@@ -63,6 +64,7 @@ public class AircraftManager : MonoBehaviour
         // move towards next position
         if (Vector3.Distance(aircraft.transform.position, newPosition) < 0.05)
             nextPosition++;
+        CheckTrajectory();
     }
 
     public void MultiplySpeed(float times)
@@ -92,10 +94,39 @@ public class AircraftManager : MonoBehaviour
         trail.SetPosition(0, aircraft.transform.position);
     }
 
+    // Initializes Aircraft object and starts default flight
     public void Initialize()
     {
         aircraft.CreateAircraft(0.03f, 0.015f, 0f);
+        aircraft.GetComponent<CapsuleCollider>().isTrigger = true;
         aircraftCamera.SetTarget(aircraft.transform);
         StartFlight(defaultFlight);
+    }
+
+    // Sets trail color
+    public void SetTrailColor(Color color)
+    {
+        trail.GetComponent<Renderer>().material.SetColor("_Color", color);
+    }
+
+    // Sets trail color
+    public void SetAircraftColor(Color color)
+    {
+        aircraft.GetComponent<Renderer>().material.SetColor("_Color", color);
+    }
+
+    // Checks if aircraft is within the ILS trajectory and changes colors accordingly
+    private void CheckTrajectory()
+    {
+        if (aircraft.withinBounds)
+        {
+            SetAircraftColor(Color.green);
+            SetTrailColor(Color.green);
+        }
+        else
+        {
+            SetAircraftColor(Color.red);
+            SetTrailColor(Color.red);
+        }
     }
 }

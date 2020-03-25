@@ -3,6 +3,7 @@
 public class Aircraft : MonoBehaviour
 {
     CapsuleCollider aircraftCollider;
+    public bool withinBounds { get; private set; }
     void Awake()
     {
         aircraftCollider = GetComponent<CapsuleCollider>();
@@ -201,5 +202,19 @@ public class Aircraft : MonoBehaviour
         mesh.RecalculateBounds();
         mesh.RecalculateNormals();
         transform.position = Vector3.zero;
+    }
+
+    // If aircraft exits bounds
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.GetComponentInParent<Tube>())
+            withinBounds = false;
+    }
+
+    // If aircraft is within bounds
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.GetComponentInParent<Tube>())
+            withinBounds = true;
     }
 }
