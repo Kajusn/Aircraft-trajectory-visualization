@@ -129,4 +129,10 @@ public class AircraftManager : MonoBehaviour
             SetTrailColor(Color.red);
         }
     }
+
+    // Checks if aircraft is within the ILS trajectory and changes colors accordingly
+    public void ToggleTrajectory(bool toggle)
+    {
+        trail.GetComponent<Renderer>().enabled = toggle;
+    }
 }
