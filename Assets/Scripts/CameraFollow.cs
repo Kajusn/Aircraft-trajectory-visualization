@@ -6,7 +6,7 @@ public class CameraFollow : MonoBehaviour
     private float distance = 0.8f;
     
     [SerializeField]
-    private float height = 0.15f;
+    private float height = 0.25f;
 
     private Transform target;
 

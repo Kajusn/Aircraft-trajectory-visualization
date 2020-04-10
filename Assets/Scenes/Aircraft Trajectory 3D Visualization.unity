@@ -413,7 +413,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.00002670288}
+  m_AnchoredPosition: {x: 0, y: 0.00007247925}
   m_SizeDelta: {x: 0, y: 28}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &170076733
@@ -564,7 +564,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 614426723}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.8133333
+  m_Size: 0.9999998
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3558,6 +3558,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab: {fileID: 1308887515}
+  curtainMaterial: {fileID: 2100000, guid: 04ba8a0e01038fc4fbec28f24dee0083, type: 2}
   dataManager: {fileID: 127978206}
 --- !u!114 &1891667425
 MonoBehaviour:
@@ -3635,7 +3636,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0.03824997
-        value: 0.111112595
+        value: 0.041669846
         inSlope: 0
         outSlope: 0
         tangentMode: 0

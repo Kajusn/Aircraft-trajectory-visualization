@@ -4,7 +4,7 @@ public class Tube : MonoBehaviour
 {
     float height = 1f;
     int nbSides = 6;
-    float radius = 0.15f;
+    public float radius { private set; get; } = 0.15f;
     float thickness = 0.01f;
     Vector3 position;
     Vector3 target = Vector3.zero;

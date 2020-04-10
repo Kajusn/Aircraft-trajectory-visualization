@@ -7,6 +7,9 @@ public class TrajectoryManager : MonoBehaviour
     private Tube prefab;
 
     [SerializeField]
+    private Material curtainMaterial;
+
+    [SerializeField]
     private DataManager dataManager;
 
     private GameObject landingProcedure;
@@ -31,10 +34,22 @@ public class TrajectoryManager : MonoBehaviour
             Vector3 next = new Vector3((float)list[i + 1].x,
                                         (float)list[i + 1].z,
                                         (float)list[i + 1].y);
+            // Creates a tube object connecting two coordinates
             Tube tube = Instantiate(prefab);
             tube.Settings(Vector3.Distance(current, next), current, next);
             tube.CreateTube(false);
             tube.transform.SetParent(landingProcedure.transform);
+
+            if (i == 0)
+                continue;
+            // Creates curtain under tube object for better 3D visualization
+            GameObject curtain = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            curtain.GetComponent<MeshRenderer>().material = curtainMaterial;
+            Vector3 curtainOffset = new Vector3(0, tube.transform.position.y / 2 + tube.radius, 0);
+            curtain.transform.position = Vector3.Lerp(current, next, 0.5f) - curtainOffset;
+            curtain.transform.rotation = tube.transform.rotation;
+            curtain.transform.localScale = new Vector3(0.01f, Vector3.Distance(current, next), tube.transform.position.y);
+            curtain.transform.SetParent(tube.transform);
         }
     }
 }
