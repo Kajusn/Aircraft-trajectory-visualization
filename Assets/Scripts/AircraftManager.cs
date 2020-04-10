@@ -18,6 +18,7 @@ public class AircraftManager : MonoBehaviour
     private List<Coordinates> coordinates;
     private int nextPosition = 0;
     private float smoothSpeed;
+    public float angle { private set; get; }
     public Aircraft aircraft { get; private set; }
     private LineRenderer trail;
 
@@ -51,9 +52,15 @@ public class AircraftManager : MonoBehaviour
         Vector3 newPosition = new Vector3((float)coordinates[nextPosition].x,
                                           (float)coordinates[nextPosition].z,
                                           (float)coordinates[nextPosition].y);
+        var prevPosition = aircraft.transform.position;
         aircraft.transform.position = Vector3.MoveTowards(aircraft.transform.position, newPosition, Time.deltaTime * speed);
+        // Update trail
         trail.positionCount++;
         trail.SetPosition(trail.positionCount - 1, aircraft.transform.position);
+        // Update angle
+        var newAngle = Vector3.Angle(prevPosition, aircraft.transform.position);
+        if (this.angle != newAngle && newAngle != 0)
+            this.angle = newAngle*100;
 
         // Rotation movement
         smoothSpeed = 7 * speed;
@@ -71,6 +78,7 @@ public class AircraftManager : MonoBehaviour
     {
         this.speed = 0.07f * times;
     }
+
     // Used to start flight simulation
     public void StartFlight(string flight)
     {
