@@ -4,11 +4,20 @@ using UnityEngine.UI;
 public class SimulationManager : MonoBehaviour
 {
     [SerializeField]
+    private Text heightText;
+
+    [SerializeField]
     private Text angleText;
+
+    [SerializeField]
+    private Text angleAlert;
+
+    private AircraftManager acManager;
 
     void Start()
     {
-        InvokeRepeating("UpdateAngle", 0.2f, 0.3f);
+        InvokeRepeating("UpdateAngleAltitude", 0.2f, 0.3f);
+        acManager = GetComponent<AircraftManager>();
     }
     public void StartSimulation()
     {
@@ -21,8 +30,17 @@ public class SimulationManager : MonoBehaviour
         GetComponent<AircraftManager>().StartFlight(flight);
     }
 
-    void UpdateAngle()
+    void UpdateAngleAltitude()
     {
-        angleText.text = GetComponent<AircraftManager>().angle.ToString();
+        angleAlert.enabled = false;
+        float altitude = Mathf.Round(acManager.aircraft.transform.position.y * 3280.8f)-400; // Convert Km to Ft
+        float angle = acManager.angle;
+        if (altitude <= 4200 && altitude >= 1800)
+        {
+            if (angle >= 6.6f || angle <= 4.6f)
+                angleAlert.enabled = true;
+        }
+        angleText.text = angle.ToString()+"%";
+        heightText.text = altitude.ToString();
     }
 }

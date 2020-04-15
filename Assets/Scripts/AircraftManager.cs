@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -53,14 +54,16 @@ public class AircraftManager : MonoBehaviour
                                           (float)coordinates[nextPosition].z,
                                           (float)coordinates[nextPosition].y);
         var prevPosition = aircraft.transform.position;
+        var prevDir = aircraft.transform.up;
         aircraft.transform.position = Vector3.MoveTowards(aircraft.transform.position, newPosition, Time.deltaTime * speed);
         // Update trail
         trail.positionCount++;
         trail.SetPosition(trail.positionCount - 1, aircraft.transform.position);
         // Update angle
-        var newAngle = Vector3.Angle(prevPosition, aircraft.transform.position);
+        var targetDir = aircraft.transform.position - prevPosition;
+        float newAngle = Vector3.Angle(targetDir, prevDir);
         if (this.angle != newAngle && newAngle != 0)
-            this.angle = newAngle*100;
+            this.angle = (float)Math.Round(newAngle, 1);
 
         // Rotation movement
         smoothSpeed = 7 * speed;
@@ -111,13 +114,7 @@ public class AircraftManager : MonoBehaviour
         StartFlight(defaultFlight);
     }
 
-    // Sets trail color
-    public void SetTrailColor(Color color)
-    {
-        trail.GetComponent<Renderer>().material.SetColor("_Color", color);
-    }
-
-    // Sets trail color
+    // Sets aircraft color
     public void SetAircraftColor(Color color)
     {
         aircraft.GetComponent<Renderer>().material.SetColor("_Color", color);
@@ -127,15 +124,9 @@ public class AircraftManager : MonoBehaviour
     private void CheckTrajectory()
     {
         if (aircraft.withinBounds)
-        {
             SetAircraftColor(Color.green);
-            SetTrailColor(Color.green);
-        }
         else
-        {
             SetAircraftColor(Color.red);
-            SetTrailColor(Color.red);
-        }
     }
 
     // Checks if aircraft is within the ILS trajectory and changes colors accordingly
