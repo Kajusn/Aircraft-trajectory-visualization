@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TrajectoryManager : MonoBehaviour
 {
@@ -14,9 +16,23 @@ public class TrajectoryManager : MonoBehaviour
 
     private GameObject landingProcedure;
 
+    [SerializeField]
+    private Text heightText;
+
+    [SerializeField]
+    private Text angleText;
+
+    [SerializeField]
+    private Image angleAlert;
+
+    private AircraftManager acManager;
+
     void Start()
     {
+        acManager = GetComponent<AircraftManager>();
+        angleAlert.enabled = false;
         RenderProcedure();
+        InvokeRepeating("UpdateAngleAltitude", 0.2f, 0.3f);
     }
 
     // Renders landing procedure
@@ -51,5 +67,22 @@ public class TrajectoryManager : MonoBehaviour
             curtain.transform.localScale = new Vector3(0.01f, Vector3.Distance(current, next), tube.transform.position.y);
             curtain.transform.SetParent(tube.transform);
         }
+    }
+
+    // Updates angle and altitute values, alerts if angle is not within allowed limit
+    void UpdateAngleAltitude()
+    {
+        angleAlert.enabled = false;
+        int altitude = (int)Mathf.Round(acManager.aircraft.transform.position.y * 3280.8f) - 400; // Convert Km to Ft
+        double angle = Math.Round(acManager.angle * 1.11f, 1);  // Angle calculated in percentage of 90 degrees
+        if (altitude <= 4200 && altitude >= 1800)
+        {
+            if (angle >= 6.6f || angle <= 4.6f)
+            {
+                angleAlert.enabled = true;
+            }
+        }
+        angleText.text = angle.ToString() + "%";
+        heightText.text = altitude.ToString();
     }
 }

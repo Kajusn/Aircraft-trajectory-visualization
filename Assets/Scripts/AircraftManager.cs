@@ -14,12 +14,13 @@ public class AircraftManager : MonoBehaviour
     [SerializeField]
     private CameraFollow aircraftCamera;
 
+    [SerializeField]
     private float speed = 0.07f;    // Around 250 km/h
 
     private List<Coordinates> coordinates;
     private int nextPosition = 0;
     private float smoothSpeed;
-    public float angle { private set; get; }
+    public float angle { get; private set;}
     public Aircraft aircraft { get; private set; }
     private LineRenderer trail;
 
