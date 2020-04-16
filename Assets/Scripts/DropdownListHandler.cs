@@ -9,9 +9,6 @@ public class DropdownListHandler : MonoBehaviour
     private SimulationManager simulationManager;
 
     [SerializeField]
-    private GameObject flightText;
-
-    [SerializeField]
     private DataManager dataManager;
 
     private Dropdown dropdown;
@@ -20,10 +17,10 @@ public class DropdownListHandler : MonoBehaviour
     {
         dropdown = GetComponent<Dropdown>();
         Populate(dataManager.keys);
+        dropdown.value = dropdown.options.IndexOf(dropdown.options[54]);
     }
     public void Dropdown_IndexChanged(int index)
     {
-        flightText.GetComponent<Text>().text = dropdown.options[index].text;
         dropdown.captionText.text = dropdown.options[index].text;
         simulationManager.ChangeFlight(dropdown.captionText.text);
     }
