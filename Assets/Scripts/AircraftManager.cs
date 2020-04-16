@@ -24,8 +24,6 @@ public class AircraftManager : MonoBehaviour
     public Aircraft aircraft { get; private set; }
     private LineRenderer trail;
 
-    private string defaultFlight = "ELG1337";
-
     void Awake()
     {
         aircraft = Instantiate<Aircraft>(aircraftModel);
@@ -75,12 +73,6 @@ public class AircraftManager : MonoBehaviour
         // move towards next position
         if (Vector3.Distance(aircraft.transform.position, newPosition) < 0.05)
             nextPosition++;
-        CheckTrajectory();
-    }
-
-    public void MultiplySpeed(float times)
-    {
-        this.speed = 0.07f * times;
     }
 
     // Used to start flight simulation
@@ -107,32 +99,17 @@ public class AircraftManager : MonoBehaviour
     }
 
     // Initializes Aircraft object and starts default flight
-    public void Initialize()
+    public void Initialize(string flight)
     {
         aircraft.CreateAircraft(0.03f, 0.015f, 0f);
         aircraft.GetComponent<CapsuleCollider>().isTrigger = true;
         aircraftCamera.SetTarget(aircraft.transform);
-        StartFlight(defaultFlight);
+        StartFlight(flight);
     }
 
     // Sets aircraft color
     public void SetAircraftColor(Color color)
     {
         aircraft.GetComponent<Renderer>().material.SetColor("_Color", color);
-    }
-
-    // Checks if aircraft is within the ILS trajectory and changes colors accordingly
-    private void CheckTrajectory()
-    {
-        if (aircraft.withinBounds)
-            SetAircraftColor(Color.green);
-        else
-            SetAircraftColor(Color.red);
-    }
-
-    // Checks if aircraft is within the ILS trajectory and changes colors accordingly
-    public void ToggleTrajectory(bool toggle)
-    {
-        trail.GetComponent<Renderer>().enabled = toggle;
     }
 }

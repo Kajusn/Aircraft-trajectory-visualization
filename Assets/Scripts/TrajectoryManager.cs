@@ -33,6 +33,7 @@ public class TrajectoryManager : MonoBehaviour
         angleAlert.enabled = false;
         RenderProcedure();
         InvokeRepeating("UpdateAngleAltitude", 0.2f, 0.3f);
+        InvokeRepeating("CheckTrajectory", 0.2f, 0.3f);
     }
 
     // Renders landing procedure
@@ -84,5 +85,14 @@ public class TrajectoryManager : MonoBehaviour
         }
         angleText.text = angle.ToString() + "%";
         heightText.text = altitude.ToString();
+    }
+
+    // Checks if aircraft is within the ILS trajectory, alerts if out of bounds
+    private void CheckTrajectory()
+    {
+        if (acManager.aircraft.withinBounds)
+            acManager.SetAircraftColor(Color.green);
+        else
+            acManager.SetAircraftColor(Color.red);
     }
 }

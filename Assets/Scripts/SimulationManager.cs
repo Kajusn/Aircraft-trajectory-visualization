@@ -6,6 +6,9 @@ public class SimulationManager : MonoBehaviour
 {
     private AircraftManager acManager;
 
+    [SerializeField]
+    private Dropdown dropdown;
+
     void Start()
     {
         acManager = GetComponent<AircraftManager>();
@@ -13,7 +16,7 @@ public class SimulationManager : MonoBehaviour
     }
     public void StartSimulation()
     {
-        acManager.Initialize();
+        acManager.Initialize(dropdown.captionText.text);
         GetComponent<CameraManager>().SwitchAircraftCamera();
     }
 
