@@ -221,7 +221,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   radar: {fileID: 940471055}
   flightsFileName: flights.csv
-  ILSFileName: ILS-V.csv
+  ILSFileName: ILS-Z.csv
 --- !u!4 &127978207
 Transform:
   m_ObjectHideFlags: 0
@@ -269,7 +269,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000011444092}
+  m_AnchoredPosition: {x: 0, y: -0.0000038146973}
   m_SizeDelta: {x: 0, y: 28}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1 &170076733
@@ -1166,7 +1166,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 885561895}
   m_LocalRotation: {x: -0, y: 0.18611383, z: -0, w: 0.9825282}
-  m_LocalPosition: {x: 24.708, y: 0.502, z: 24.926}
+  m_LocalPosition: {x: 24.708, y: 0.031, z: 24.926}
   m_LocalScale: {x: 0.254214, y: 0.001, z: 2.515}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1257,13 +1257,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 940471051}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 25.5, y: 0.707, z: 25.21}
+  m_LocalRotation: {x: 0.00651421, y: 0.19100577, z: 0.016724158, w: 0.98142487}
+  m_LocalPosition: {x: 25.166, y: 0.231, z: 24.896}
   m_LocalScale: {x: 0.1, y: 0.2, z: 0.1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 7
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.367, y: 22.033, z: 2.0240002}
 --- !u!1 &970492767
 GameObject:
   m_ObjectHideFlags: 0
