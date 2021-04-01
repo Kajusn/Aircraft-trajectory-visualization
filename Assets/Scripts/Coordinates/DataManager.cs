@@ -69,8 +69,9 @@ public class DataManager : MonoBehaviour
                 var data = Regex.Match(line, coordinatesPattern).Value.Split(',');
                 if (flightNumber == "" || altitude == "" || data == null)
                 {
-                    if (EditorUtility.DisplayDialog("Invalid flight data invalid",
-                        "Expected format: FLIGHT_NUMBER,X,Y,ALTITUDE", "Close"))
+                    Debug.LogError("Invalid flight data format");
+                    if (EditorUtility.DisplayDialog("Invalid flight data format",
+                        "Expected format: FLIGHT_NUMBER, X, Y, ALTITUDE", "Close"))
                     {
                         Application.Quit();
                     }
@@ -79,7 +80,7 @@ public class DataManager : MonoBehaviour
                     Convert.ToDouble(data[0]) * NM_M * UnitRatio + runwayReferenceX,
                     Convert.ToDouble(data[1]) * NM_M * UnitRatio + runwayReferenceZ,
                     Convert.ToDouble(altitude) * FT_M * UnitRatio + 0.16152,
-                    flightNumber);    // Flight number
+                    flightNumber);
 
                 if (!flightsTable.ContainsKey(flightNumber))
                 {
