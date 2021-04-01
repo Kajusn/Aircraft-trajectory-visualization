@@ -4,11 +4,16 @@ using System.Linq;
 using System.IO;
 using System;
 using UnityEngine;
+using System.Text.RegularExpressions;
+using UnityEditor;
 
 public class DataManager : MonoBehaviour
 {
     [SerializeField]
     Transform radar;
+
+    [SerializeField]
+    Transform runway;
 
     [SerializeField]
     String flightsFileName;
@@ -46,29 +51,44 @@ public class DataManager : MonoBehaviour
     {
         var coordinatesList = new List<Coordinates>();
         var flightsTable = new Hashtable();
+        /* Used to align flight to runway */
+        var runwayReferenceX = runway.position.x - Convert.ToDouble(2);
+        var runwayReferenceZ = runway.position.z - Convert.ToDouble(3);
+        var coordinatesPattern = @"-?\d{1,3}\.\d{1,6},-?\d{1,3}\.\d{1,6}";
+        var altitudePattern = @"([1-9]$|[1-9]\d{1,6}$)";
+        var flightNumberPattern = @"[A-Z]{1,4}(\d|[A-Z]){2,4}";
 
         using (var reader = new StreamReader(FilePath))
         {
-            var line = reader.ReadLine();   // First line of data is unnecessary
+            var line = reader.ReadLine();
             while (!reader.EndOfStream)
             {
                 line = reader.ReadLine();
-                var data = line.Split(',');
-                var coordinates = new Coordinates(          // ADD or SUBTRACT values to first two to move entire trajectory
-                Convert.ToDouble(data[2]) * NM_M * UnitRatio + -147.0122375, //-147.7389375     
-                Convert.ToDouble(data[3]) * NM_M * UnitRatio + 122.9220125, //122.4673125 
-                Convert.ToDouble(data[4]) * FT_M * UnitRatio + 0.16152,
-                data[1],    // Flight ID
-                data[0]);   // Time coordinates were retrieved
+                string flightNumber = Regex.Match(line, flightNumberPattern).Value;
+                string altitude = Regex.Match(line, altitudePattern).Value;
+                var data = Regex.Match(line, coordinatesPattern).Value.Split(',');
+                if (flightNumber == "" || altitude == "" || data == null)
+                {
+                    if (EditorUtility.DisplayDialog("Invalid flight data invalid",
+                        "Expected format: FLIGHT_NUMBER,X,Y,ALTITUDE", "Close"))
+                    {
+                        Application.Quit();
+                    }
+                }
+                var coordinates = new Coordinates(
+                    Convert.ToDouble(data[0]) * NM_M * UnitRatio + runwayReferenceX,
+                    Convert.ToDouble(data[1]) * NM_M * UnitRatio + runwayReferenceZ,
+                    Convert.ToDouble(altitude) * FT_M * UnitRatio + 0.16152,
+                    flightNumber);    // Flight number
 
-                if (!flightsTable.ContainsKey(data[1]))
+                if (!flightsTable.ContainsKey(flightNumber))
                 {
                     var newList = new List<Coordinates>();
                     newList.Add(coordinates);
-                    flightsTable.Add(data[1], newList);
+                    flightsTable.Add(flightNumber, newList);
                 }
                 else
-                    ((List<Coordinates>)flightsTable[data[1]]).Add(coordinates);
+                    ((List<Coordinates>)flightsTable[flightNumber]).Add(coordinates);
             }
             keys = flightsTable.Keys.Cast<string>().ToList();
             return flightsTable;
@@ -81,15 +101,15 @@ public class DataManager : MonoBehaviour
         var coordinatesList = new List<Coordinates>();
         using (var reader = new StreamReader(FilePath))
         {
-            var line = reader.ReadLine();   // First line of data is unnecessary
+            var line = reader.ReadLine();
             while (!reader.EndOfStream)
             {
                 line = reader.ReadLine();
                 var data = line.Split(',');
                 var coordinates = new Coordinates(
-                Convert.ToDouble(data[0]) * NM_M * UnitRatio + radar.position.x,    //34.06161
-                Convert.ToDouble(data[1]) * NM_M * UnitRatio + radar.position.z,    //28.2831
-                Convert.ToDouble(data[2]) * FT_M * UnitRatio + 0.16152);
+                    Convert.ToDouble(data[0]) * NM_M * UnitRatio + radar.position.x,
+                    Convert.ToDouble(data[1]) * NM_M * UnitRatio + radar.position.z,
+                    Convert.ToDouble(data[2]) * FT_M * UnitRatio + 0.16152);
                 coordinatesList.Add(coordinates);
             }
         }
@@ -103,15 +123,13 @@ public class Coordinates
     public double y;
     public double z;
     public string flight;
-    public string time;
 
-    public Coordinates(double x, double y, double z, string flight, string time)
+    public Coordinates(double x, double y, double z, string flight)
     {
         this.x = x;
         this.y = y;
         this.z = z;
         this.flight = flight;
-        this.time = time;
     }
     public Coordinates(double x, double y, double z)
     {
