@@ -30,6 +30,9 @@ public class DataManager : MonoBehaviour
     private int NM_M = 1852;            // Nautical miles to meters conversion
     private double FT_M = 0.3048;       // Feet to meters conversion
     private double UnitRatio = 0.001;   // Real world 1 meter is represented by 0.001 Unity units
+    string coordinatesPattern = @"(-?\d{1,3}\.\d{1,6}|-?\d{1,3}),(-?\d{1,3}\.\d{1,6}|-?\d{1,3})";
+    string altitudePattern = @"([0-9]$|[1-9]\d{1,6}$)";
+    string flightNumberPattern = @"[A-Z]{1,4}(\d|[A-Z]){2,4}";
 
     // Checks if data file exists
     void Awake()
@@ -51,12 +54,28 @@ public class DataManager : MonoBehaviour
     {
         var coordinatesList = new List<Coordinates>();
         var flightsTable = new Hashtable();
-        /* Used to align flight to runway */
-        var runwayReferenceX = runway.position.x - Convert.ToDouble(2); // Should subtract the last coordinate aka the landing coordinates so they match the runway
-        var runwayReferenceZ = runway.position.z - Convert.ToDouble(3); // Should subtract the last coordinate aka the landing coordinates so they match the runway
-        var coordinatesPattern = @"(-?\d{1,3}\.\d{1,6}|-?\d{1,3}),(-?\d{1,3}\.\d{1,6}|-?\d{1,3})";
-        var altitudePattern = @"([0-9]$|[1-9]\d{1,6}$)";
-        var flightNumberPattern = @"[A-Z]{1,4}(\d|[A-Z]){2,4}";
+        double runwayReferenceX = 0;
+        double runwayReferenceZ = 0;
+
+        /* Calculating runway reference coordinates
+         * Used to adjust flight coordinates so aircraft lands/takes off at runway coordinates */
+        using (var reader = new StreamReader(FilePath))
+        {
+            while (!reader.EndOfStream)
+            {
+                var line = reader.ReadLine();
+                var nextLine = reader.ReadLine();
+                var flightNumber = Regex.Match(line, flightNumberPattern).Value;
+                var nextFlightNumber = Regex.Match(nextLine, flightNumberPattern).Value;
+                if (Regex.IsMatch(line, @",0$") && flightNumber != nextFlightNumber)
+                {
+                    var refCoordinates = Regex.Match(line, coordinatesPattern).Value.Split(',');
+                    runwayReferenceX = Convert.ToDouble(refCoordinates[0]) * NM_M * UnitRatio - runway.position.x;
+                    runwayReferenceZ = Convert.ToDouble(refCoordinates[1]) * NM_M * UnitRatio - runway.position.z;
+                    break;
+                }
+            }
+        }
 
         using (var reader = new StreamReader(FilePath))
         {
@@ -77,9 +96,9 @@ public class DataManager : MonoBehaviour
                     }
                 }
                 var coordinates = new Coordinates(
-                    Convert.ToDouble(data[0]) * NM_M * UnitRatio + runwayReferenceX,
-                    Convert.ToDouble(data[1]) * NM_M * UnitRatio + runwayReferenceZ,
-                    Convert.ToDouble(altitude) * FT_M * UnitRatio + 0.16152,
+                    Convert.ToDouble(data[0]) * NM_M * UnitRatio - runwayReferenceX,
+                    Convert.ToDouble(data[1]) * NM_M * UnitRatio - runwayReferenceZ,
+                    Convert.ToDouble(altitude) * FT_M * UnitRatio + runway.position.y,
                     flightNumber);
                 if (!flightsTable.ContainsKey(flightNumber))
                 {
@@ -109,7 +128,7 @@ public class DataManager : MonoBehaviour
                 var coordinates = new Coordinates(
                     Convert.ToDouble(data[0]) * NM_M * UnitRatio + radar.position.x,
                     Convert.ToDouble(data[1]) * NM_M * UnitRatio + radar.position.z,
-                    Convert.ToDouble(data[2]) * FT_M * UnitRatio + 0.16152);
+                    Convert.ToDouble(data[2]) * FT_M * UnitRatio + runway.position.y);
                 coordinatesList.Add(coordinates);
             }
         }
