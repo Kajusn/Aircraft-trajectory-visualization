@@ -52,10 +52,10 @@ public class DataManager : MonoBehaviour
         var coordinatesList = new List<Coordinates>();
         var flightsTable = new Hashtable();
         /* Used to align flight to runway */
-        var runwayReferenceX = runway.position.x - Convert.ToDouble(2);
-        var runwayReferenceZ = runway.position.z - Convert.ToDouble(3);
-        var coordinatesPattern = @"-?\d{1,3}\.\d{1,6},-?\d{1,3}\.\d{1,6}";
-        var altitudePattern = @"([1-9]$|[1-9]\d{1,6}$)";
+        var runwayReferenceX = runway.position.x - Convert.ToDouble(2); // Should subtract the last coordinate aka the landing coordinates so they match the runway
+        var runwayReferenceZ = runway.position.z - Convert.ToDouble(3); // Should subtract the last coordinate aka the landing coordinates so they match the runway
+        var coordinatesPattern = @"(-?\d{1,3}\.\d{1,6}|-?\d{1,3}),(-?\d{1,3}\.\d{1,6}|-?\d{1,3})";
+        var altitudePattern = @"([0-9]$|[1-9]\d{1,6}$)";
         var flightNumberPattern = @"[A-Z]{1,4}(\d|[A-Z]){2,4}";
 
         using (var reader = new StreamReader(FilePath))
@@ -81,7 +81,6 @@ public class DataManager : MonoBehaviour
                     Convert.ToDouble(data[1]) * NM_M * UnitRatio + runwayReferenceZ,
                     Convert.ToDouble(altitude) * FT_M * UnitRatio + 0.16152,
                     flightNumber);
-
                 if (!flightsTable.ContainsKey(flightNumber))
                 {
                     var newList = new List<Coordinates>();

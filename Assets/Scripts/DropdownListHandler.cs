@@ -17,11 +17,10 @@ public class DropdownListHandler : MonoBehaviour
     {
         dropdown = GetComponent<Dropdown>();
         Populate(dataManager.keys);
-        dropdown.value = dropdown.options.IndexOf(dropdown.options[54]);
+        dropdown.value = dropdown.options.IndexOf(dropdown.options[0]);
     }
     public void Dropdown_IndexChanged(int index)
     {
-        dropdown.captionText.text = dropdown.options[index].text;
         simulationManager.ChangeFlight(dropdown.captionText.text);
     }
 

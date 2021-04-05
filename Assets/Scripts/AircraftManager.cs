@@ -86,13 +86,16 @@ public class AircraftManager : MonoBehaviour
     private void ResetPosition()
     {
         this.nextPosition = 0;
+        var lookatPosition = 0;
         trail.positionCount = 1;
         Vector3 newPosition = new Vector3((float)coordinates[nextPosition].x,
                                           (float)coordinates[nextPosition].z,
                                           (float)coordinates[nextPosition].y);
-        Vector3 lookAt = new Vector3((float)coordinates[nextPosition + 1].x,
-                                     (float)coordinates[nextPosition + 1].z,
-                                     (float)coordinates[nextPosition + 1].y);
+        if (coordinates.Count > nextPosition + 1)
+            lookatPosition = 1;
+        Vector3 lookAt = new Vector3((float)coordinates[nextPosition + lookatPosition].x,
+                                     (float)coordinates[nextPosition + lookatPosition].z,
+                                     (float)coordinates[nextPosition + lookatPosition].y);
         aircraft.transform.position = newPosition;
         aircraft.transform.rotation = Quaternion.LookRotation(-(lookAt - aircraft.transform.position) + new Vector3(0f, 90.0f, 0f));
         trail.SetPosition(0, aircraft.transform.position);
