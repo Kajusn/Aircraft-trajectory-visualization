@@ -1,6 +1,4 @@
-# Aircraft-trajectory-visualization
-
-## Aircraft trajectory visualization: Vilnius case
+# Aircraft trajectory visualization: Vilnius case
 
 This is the repository for my thesis project titled "Aircraft trajectory visualization: Vilnius case".
 Vilnius University, Software Engineering Bachelor's, fourth year, second semester.
